@@ -5,7 +5,7 @@ export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loginStatus, setLoginStatus] = useState('')
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    // const [isAuthenticated, setIsAuthenticated] = useState(false)
 
     const onSubmitHandler = (event) => {
         event.preventDefault()
@@ -18,7 +18,6 @@ export default function Login() {
             password: password
         }
         axios.post('http://localhost:8040/login', user).then(response => {
-            console.log(response.data.data);
             setLoginStatus(response.data.data.message)
             auth()
         }).catch(error => console.log(error))
@@ -26,7 +25,7 @@ export default function Login() {
 
     const auth = () => {
         axios.get('http://localhost:8040/profile').then(response => {
-            setIsAuthenticated(response.data.message)
+            localStorage.setItem('token', response.data.token)
         })
     }
 
@@ -45,7 +44,6 @@ export default function Login() {
                 <button className="btn btn-dark w-100">Submit</button>
             </form>
             <h3>{loginStatus}</h3>
-            <h2>{isAuthenticated}</h2>
         </div>
     )
 }
